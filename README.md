@@ -4,9 +4,9 @@
 
 ## Live App
 
-**Live URL:** `REPLACE_WITH_YOUR_VERCEL_URL_AFTER_DEPLOYMENT`
+**Live URL:** https://parhai-exam-rescue.vercel.app/`
 
-> Before submitting, replace the text above with the real clickable Vercel URL and test it in an incognito window.
+
 
 ## The Real Problem
 
