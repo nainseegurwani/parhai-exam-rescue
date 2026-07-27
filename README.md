@@ -4,7 +4,7 @@
 
 ## Live App
 
-**Live URL:** https://parhai-exam-rescue.vercel.app/`
+**Live URL:** [https://parhai-exam-rescue.vercel.app/`](https://parhai-exam-rescue.vercel.app/)
 
 
 
