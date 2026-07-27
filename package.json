@@ -1,0 +1,12 @@
+{
+  "name": "parhai-exam-rescue",
+  "version": "1.0.0",
+  "private": true,
+  "description": "AI-powered emergency study planner for students with an approaching exam.",
+  "scripts": {
+    "dev": "vercel dev"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

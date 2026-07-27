@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="ParhAI creates an AI-powered emergency study plan, priority list, timeline, and mini quiz for students with an exam approaching." />
+  <title>ParhAI — Exam Rescue Planner</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="background-orb orb-one"></div>
+  <div class="background-orb orb-two"></div>
+
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="ParhAI home">
+      <span class="brand-mark">P</span>
+      <span>
+        <strong>ParhAI</strong>
+        <small>Exam Rescue Planner</small>
+      </span>
+    </a>
+    <nav>
+      <button id="historyButton" class="ghost-button" type="button">Saved plans <span id="historyCount">0</span></button>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="hero-copy">
+        <span class="eyebrow">AI-powered study planning</span>
+        <h1>Turn exam panic into a clear action plan.</h1>
+        <p>Tell ParhAI what you need to study and how much time you have. It creates a realistic schedule, topic priorities, revision checklist, and a quick practice quiz.</p>
+        <div class="hero-points" aria-label="App highlights">
+          <span>Personalized timeline</span>
+          <span>Priority scoring</span>
+          <span>Instant mini-quiz</span>
+        </div>
+      </div>
+
+      <div class="hero-stat-card" aria-label="Study planning tip">
+        <span class="stat-icon">⚡</span>
+        <p class="stat-number">1 plan</p>
+        <p class="stat-label">A focused plan is better than ten hours of random study.</p>
+      </div>
+    </section>
+
+    <section class="workspace">
+      <article class="panel form-panel">
+        <div class="panel-heading">
+          <div>
+            <span class="step-label">Step 1</span>
+            <h2>Describe your exam</h2>
+          </div>
+          <span class="privacy-badge">No account needed</span>
+        </div>
+
+        <form id="plannerForm">
+          <div class="field-grid two-columns">
+            <label class="field">
+              <span>Exam or subject</span>
+              <input id="examName" name="examName" type="text" maxlength="80" placeholder="e.g. Artificial Intelligence" required />
+            </label>
+            <label class="field">
+              <span>Hours available</span>
+              <input id="availableHours" name="availableHours" type="number" min="1" max="24" step="0.5" value="4" required />
+            </label>
+          </div>
+
+          <label class="field">
+            <span>Topics in the exam</span>
+            <textarea id="topics" name="topics" rows="5" maxlength="1800" placeholder="e.g. A* search, minimax, alpha-beta pruning, knowledge representation..." required></textarea>
+            <small>Separate topics with commas or new lines.</small>
+          </label>
+
+          <label class="field">
+            <span>Topics you find difficult</span>
+            <textarea id="weakTopics" name="weakTopics" rows="3" maxlength="1000" placeholder="e.g. alpha-beta pruning and heuristic functions"></textarea>
+          </label>
+
+          <div class="field-grid two-columns">
+            <label class="field">
+              <span>Current confidence</span>
+              <select id="confidence" name="confidence">
+                <option value="1">1 — I am very confused</option>
+                <option value="2">2 — I know a little</option>
+                <option value="3" selected>3 — I know the basics</option>
+                <option value="4">4 — Mostly prepared</option>
+                <option value="5">5 — Need final revision</option>
+              </select>
+            </label>
+            <label class="field">
+              <span>Plan intensity</span>
+              <select id="intensity" name="intensity">
+                <option value="balanced" selected>Balanced</option>
+                <option value="intensive">Intensive</option>
+                <option value="gentle">Gentle</option>
+              </select>
+            </label>
+          </div>
+
+          <label class="field">
+            <span>Response language</span>
+            <select id="language" name="language">
+              <option value="English">English</option>
+              <option value="Roman Urdu" selected>Roman Urdu</option>
+              <option value="Urdu">Urdu</option>
+            </select>
+          </label>
+
+          <button id="generateButton" class="primary-button" type="submit">
+            <span class="button-label">Generate my rescue plan</span>
+            <span class="button-loader" aria-hidden="true"></span>
+          </button>
+          <p id="formError" class="error-message" role="alert"></p>
+        </form>
+      </article>
+
+      <article id="emptyState" class="panel result-panel empty-state">
+        <div class="empty-illustration" aria-hidden="true">
+          <span>✓</span><span>2h</span><span>?</span>
+        </div>
+        <span class="step-label">Step 2</span>
+        <h2>Your focused plan will appear here</h2>
+        <p>ParhAI will divide your available time into achievable sessions and create practice questions from your topics.</p>
+      </article>
+
+      <article id="resultPanel" class="panel result-panel hidden" aria-live="polite">
+        <div class="result-header">
+          <div>
+            <span class="step-label">Your AI plan</span>
+            <h2 id="resultTitle">Study Rescue Plan</h2>
+            <p id="resultSummary"></p>
+          </div>
+          <div class="result-actions">
+            <button id="copyButton" class="icon-button" type="button" title="Copy plan">Copy</button>
+            <button id="downloadButton" class="icon-button" type="button" title="Download plan">Download</button>
+          </div>
+        </div>
+
+        <section class="progress-card">
+          <div>
+            <span>Plan progress</span>
+            <strong id="progressText">0% complete</strong>
+          </div>
+          <div class="progress-track"><div id="progressBar" class="progress-bar"></div></div>
+        </section>
+
+        <section class="result-section">
+          <div class="section-title"><span>01</span><h3>Priority topics</h3></div>
+          <div id="priorityList" class="priority-list"></div>
+        </section>
+
+        <section class="result-section">
+          <div class="section-title"><span>02</span><h3>Study timeline</h3></div>
+          <div id="timelineList" class="timeline-list"></div>
+        </section>
+
+        <section class="result-section">
+          <div class="section-title"><span>03</span><h3>Quick practice quiz</h3></div>
+          <div id="quizList" class="quiz-list"></div>
+        </section>
+
+        <section class="result-section split-section">
+          <div>
+            <div class="section-title"><span>04</span><h3>Final checklist</h3></div>
+            <ul id="checklist" class="check-list"></ul>
+          </div>
+          <div>
+            <div class="section-title"><span>05</span><h3>Rescue tips</h3></div>
+            <ul id="tipsList" class="tips-list"></ul>
+          </div>
+        </section>
+
+        <p id="motivation" class="motivation"></p>
+      </article>
+    </section>
+  </main>
+
+  <aside id="historyDrawer" class="history-drawer" aria-hidden="true">
+    <div class="drawer-header">
+      <div>
+        <span class="step-label">Saved locally</span>
+        <h2>Your plans</h2>
+      </div>
+      <button id="closeHistory" class="close-button" type="button" aria-label="Close saved plans">×</button>
+    </div>
+    <div id="historyList" class="history-list"></div>
+  </aside>
+  <div id="drawerOverlay" class="drawer-overlay hidden"></div>
+
+  <footer>
+    <p>Built for students who need clarity before an exam. AI can make mistakes—verify important academic content.</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
